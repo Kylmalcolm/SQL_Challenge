@@ -1,3 +1,5 @@
+-- Create tables and import data
+
 CREATE TABLE titles(
 title_id varchar,
 title varchar,
@@ -11,7 +13,6 @@ CSV HEADER;
 
 SELECT * FROM titles;
 
--- Drop and add again to make sure date is correct
 CREATE TABLE employees(
 emp_no INTEGER NOT NULL,
 emp_title_id VARCHAR,
@@ -33,7 +34,7 @@ SELECT * FROM employees;
 
 CREATE TABLE departments(
 dept_no varchar NOT NULL,
-dept_name varchar NOT NULL,
+dept_name varchar,
 PRIMARY KEY (dept_no)
 );
 
@@ -45,8 +46,8 @@ CSV HEADER;
 SELECT * FROM departments;
 
 CREATE TABLE dept_manager(
-dept_no varchar NOT NULL,
-emp_no INTEGER NOT NULL,
+dept_no varchar,
+emp_no INTEGER,
 FOREIGN KEY (dept_no) REFERENCES departments(dept_no),
 FOREIGN KEY (emp_no) REFERENCES employees(emp_no)
 );
@@ -59,8 +60,8 @@ CSV HEADER;
 SELECT * FROM dept_manager;
 
 CREATE TABLE salaries(
-emp_no INTEGER NOT NULL,
-salary INTEGER NOT NULL,
+emp_no INTEGER,
+salary INTEGER,
 FOREIGN KEY (emp_no) REFERENCES employees(emp_no)
 );
 
@@ -72,8 +73,8 @@ CSV HEADER;
 SELECT * FROM salaries;
 
 CREATE TABLE dept_emp(
-emp_no INTEGER NOT NULL,
-dept_no VARCHAR NOT NULL,
+emp_no INTEGER,
+dept_no VARCHAR,
 FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
 FOREIGN KEY (dept_no) REFERENCES departments(dept_no)
 );
@@ -85,12 +86,37 @@ CSV HEADER;
 
 SELECT * FROM dept_emp;
 
-SELECT employees.emp_no,
-employees.last_name,
-employees.first_name,
-employees.sex,
-salaries.salary
-FROM employees
-INNER JOIN salaries ON
-employees.emp_no=salaries.emp_no
+-- 1) Employee number, last name, first name, sex, and salary
+
+SELECT e.emp_no, e.last_name, e.first_name, e.sex, s.salary
+FROM employees e
+INNER JOIN salaries s
+ON e.emp_no = s.emp_no;
+
+-- 2) First name, last name, and hire date for employees who were hired in 1986
+
+SELECT e.first_name, e.last_name, e.hire_date
+FROM employees e
+WHERE e.hire_date >= '1986-01-01' AND e.hire_date < '1987-01-01';
+
+-- 3) Manager of each department with department number, department name, the manager's employee number, last name, first name
+
+SELECT dm.dept_no, d.dept_name, dm.emp_no, e.last_name, e.first_name
+
+FROM
+dept_manager dm
+departments d
+employees e
+
+-- 4) Department of each employee with employee number, last name, first name, and department name
+
+-- 5) First name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B"
+
+SELECT e.first_name, e.last_name, e.sex
+FROM employees e
+WHERE e.first_name = 'Hercules' AND e.last_name LIKE 'B%';
+
+-- 6) All employees in the Sales department, their employee number, last name, first name, and department name
+
+-- 7) The frequency count of employee last names (how many employees share each last name) in descending order
 
