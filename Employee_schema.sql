@@ -102,11 +102,11 @@ WHERE e.hire_date >= '1986-01-01' AND e.hire_date < '1987-01-01';
 -- 3) Manager of each department with department number, department name, the manager's employee number, last name, first name
 
 SELECT dm.dept_no, d.dept_name, dm.emp_no, e.last_name, e.first_name
-
-FROM
-dept_manager dm
-departments d
-employees e
+FROM dept_manager dm
+LEFT JOIN departments d
+ON dm.dept_no = d.dept_no
+LEFT JOIN employees e
+ON dm.emp_no = e.emp_no;
 
 -- 4) Department of each employee with employee number, last name, first name, and department name
 
@@ -124,6 +124,14 @@ FROM employees e
 WHERE e.first_name = 'Hercules' AND e.last_name LIKE 'B%';
 
 -- 6) All employees in the Sales department, their employee number, last name, first name, and department name
+
+SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM departments d
+INNER JOIN dept_emp de
+ON d.dept_no = de.dept_no
+LEFT JOIN employees e
+ON de.emp_no = e.emp_no
+WHERE d.dept_name == "Sales";
 
 -- 7) The frequency count of employee last names (how many employees share each last name) in descending order
 
