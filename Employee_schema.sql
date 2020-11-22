@@ -110,6 +110,13 @@ employees e
 
 -- 4) Department of each employee with employee number, last name, first name, and department name
 
+SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM employees e
+INNER JOIN dept_emp de
+ON e.emp_no = de.emp_no
+LEFT JOIN departments d
+ON de.dept_no = d.dept_no
+
 -- 5) First name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B"
 
 SELECT e.first_name, e.last_name, e.sex
@@ -120,3 +127,7 @@ WHERE e.first_name = 'Hercules' AND e.last_name LIKE 'B%';
 
 -- 7) The frequency count of employee last names (how many employees share each last name) in descending order
 
+SELECT COUNT(e.last_name), e.last_name
+FROM employees e
+GROUP BY e.last_name
+ORDER BY COUNT(e.last_name) DESC;
