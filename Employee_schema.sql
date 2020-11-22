@@ -115,7 +115,7 @@ FROM employees e
 INNER JOIN dept_emp de
 ON e.emp_no = de.emp_no
 LEFT JOIN departments d
-ON de.dept_no = d.dept_no
+ON de.dept_no = d.dept_no;
 
 -- 5) First name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B"
 
@@ -127,11 +127,11 @@ WHERE e.first_name = 'Hercules' AND e.last_name LIKE 'B%';
 
 SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
 FROM departments d
-INNER JOIN dept_emp de
+LEFT JOIN dept_emp de
 ON d.dept_no = de.dept_no
 LEFT JOIN employees e
 ON de.emp_no = e.emp_no
-WHERE d.dept_name == "Sales";
+WHERE d.dept_name IN ('Sales');
 
 -- 7) The frequency count of employee last names (how many employees share each last name) in descending order
 
